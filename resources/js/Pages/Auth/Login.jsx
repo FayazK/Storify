@@ -6,7 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton'
 import TextInput from '@/Components/TextInput'
 import { Head, Link, router, useForm } from '@inertiajs/react'
 import AuthLayout from '@/Layouts/AuthLayout.jsx'
-import { Checkbox, Flex, Form, Input } from 'antd'
+import { Button, Checkbox, Flex, Form, Input } from 'antd'
 import { IconAt, IconLock, IconPasswordUser } from '@tabler/icons-react'
 
 export default function Login ({ status, canResetPassword }) {
@@ -54,6 +54,9 @@ export default function Login ({ status, canResetPassword }) {
             </Link>
           )}
         </Flex>
+        <Form.Item style={{marginTop:'2rem'}}>
+          <Button type={'primary'} block={true} htmlType={'submit'}>Sing-in</Button>
+        </Form.Item>
       </Form>
     </AuthLayout>
   )
