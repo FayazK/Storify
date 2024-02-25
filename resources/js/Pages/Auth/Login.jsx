@@ -9,7 +9,7 @@ import AuthLayout from '@/Layouts/AuthLayout.jsx'
 import { Button, Checkbox, Flex, Form, Input } from 'antd'
 import { IconAt, IconLock, IconPasswordUser } from '@tabler/icons-react'
 
-export default function Login ({ status, canResetPassword }) {
+export default function Login ({ canResetPassword }) {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const { processing, reset } = useForm({
@@ -25,7 +25,19 @@ export default function Login ({ status, canResetPassword }) {
   }, [])
 
   const submit = (values) => {
-    router.post(route('login'), values)
+    setLoading(true)
+    router.post(route('login'), values, {
+      preserveScroll: true,
+      onError: (errors) => {
+        Object.keys(errors).forEach((key) => {
+          form.setFields([{ name: key, errors: [errors[key]] }])
+        })
+        form.setFieldValue('password', '')
+      },
+      onFinish: () => {
+        setLoading(false)
+      },
+    })
   }// submit
 
   return (
@@ -37,14 +49,16 @@ export default function Login ({ status, canResetPassword }) {
         ]}>
           <Input prefix={<IconAt stroke={2} size={16}/>}/>
         </Form.Item>
-        <Form.Item>
+        <Form.Item name={'password'} rules={[
+          { required: true, message: 'Please input your password!' },
+        ]}>
           <Input.Password prefix={<IconPasswordUser size={16}/>}/>
         </Form.Item>
         <Flex align={'center'} justify={'space-between'}>
           <Form.Item
             name="remember"
             valuePropName="checked"
-            style={{marginBottom:0}}
+            style={{ marginBottom: 0 }}
           >
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
@@ -54,8 +68,10 @@ export default function Login ({ status, canResetPassword }) {
             </Link>
           )}
         </Flex>
-        <Form.Item style={{marginTop:'2rem'}}>
-          <Button type={'primary'} block={true} htmlType={'submit'}>Sing-in</Button>
+        <Form.Item style={{ marginTop: '2rem' }}>
+          <Button type={'primary'} block={true}
+                  loading={loading}
+                  htmlType={'submit'}>Login</Button>
         </Form.Item>
       </Form>
     </AuthLayout>
