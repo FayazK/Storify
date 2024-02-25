@@ -7,6 +7,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AuthLayout from '@/Layouts/AuthLayout.jsx'
+import { Form, Input } from 'antd'
+import { IconAt, IconLock, IconPasswordUser } from '@tabler/icons-react'
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -29,9 +31,17 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <AuthLayout title={'Login'}>
-
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
+            <Form>
+                <Form.Item name={'email'} rules={[
+                    {required: true, message: 'Please input your email!'},
+                    {type: 'email', message: 'The input is not valid E-mail!'},
+                ]}>
+                    <Input prefix={<IconAt stroke={2} size={16} />} />
+                </Form.Item>
+                <Form.Item>
+                    <Input.Password prefix={<IconPasswordUser size={16} />} />
+                </Form.Item>
+            </Form>
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
