@@ -1,50 +1,62 @@
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react'
+import AuthLayout from '@/Layouts/AuthLayout.jsx'
+import { Alert, Button, Flex, Form, Input, Typography } from 'antd'
+import { IconAt } from '@tabler/icons-react'
+import { useState } from 'react'
 
-export default function ForgotPassword({ status }) {
-    const { data, setData, post, processing, errors } = useForm({
-        email: '',
-    });
+export default function ForgotPassword () {
+  const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState(null)
+  const { data, setData, post, processing, errors } = useForm({
+    email: '',
+  })
 
-    const submit = (e) => {
-        e.preventDefault();
+  const submit = (values) => {
+    setLoading(true)
+    router.post(route('password.email'), values, {
+      onSuccess:(props)=>{
+        setStatus(props.props.status)
+      },
+      onError: (errors) => {
+        Object.keys(errors).forEach((key) => {
+          form.setFields([{ name: key, errors: [errors[key]] }])
+        })
+      },
+      onFinish: () => {
+        setLoading(false)
+        form.setFieldValue('email', '')
+      },
+    })
+  }// submit
 
-        post(route('password.email'));
-    };
+  return (
+    <AuthLayout title={'Forgot Password'}>
+      {status && <Alert style={{marginBottom:'1rem'}} message={status} type={'success'} showIcon={true} closable={true} />}
 
-    return (
-        <GuestLayout>
-            <Head title="Forgot Password" />
+      <Typography.Paragraph>
+        Forgot your password? No problem. Just let us know your email address
+        and we will email you a password
+        reset link that will allow you to choose a new one.
+      </Typography.Paragraph>
 
-            <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password
-                reset link that will allow you to choose a new one.
-            </div>
-
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-
-            <form onSubmit={submit}>
-                <TextInput
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={data.email}
-                    className="mt-1 block w-full"
-                    isFocused={true}
-                    onChange={(e) => setData('email', e.target.value)}
-                />
-
-                <InputError message={errors.email} className="mt-2" />
-
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Email Password Reset Link
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
-    );
+      <Form form={form} onFinish={submit}>
+        <Form.Item name={'email'} rules={[
+          { required: true, message: 'Please input your email!' },
+          { type: 'email', message: 'The input is not valid E-mail!' },
+        ]}>
+          <Input placeholder={'abc@xyz'} prefix={<IconAt size={18}/>}/>
+        </Form.Item>
+        <Form.Item>
+          <Button type={'primary'} htmlType={'submit'} block={true}
+                  loading={loading}>
+            Email Password Reset Link
+          </Button>
+        </Form.Item>
+        <Flex justify={'space-around'}>
+          <Link href={route('login')}>Back to Login</Link>
+        </Flex>
+      </Form>
+    </AuthLayout>
+  )
 }

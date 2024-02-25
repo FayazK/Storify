@@ -1,28 +1,12 @@
-import { useEffect, useState } from 'react'
-import GuestLayout from '@/Layouts/GuestLayout'
-import InputError from '@/Components/InputError'
-import InputLabel from '@/Components/InputLabel'
-import PrimaryButton from '@/Components/PrimaryButton'
-import TextInput from '@/Components/TextInput'
-import { Head, Link, router, useForm } from '@inertiajs/react'
+import { useState } from 'react'
+import { Link, router } from '@inertiajs/react'
 import AuthLayout from '@/Layouts/AuthLayout.jsx'
 import { Button, Checkbox, Flex, Form, Input } from 'antd'
-import { IconAt, IconLock, IconPasswordUser } from '@tabler/icons-react'
+import { IconAt, IconPasswordUser } from '@tabler/icons-react'
 
 export default function Login ({ canResetPassword }) {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
-  const { processing, reset } = useForm({
-    email: '',
-    password: '',
-    remember: false,
-  })
-
-  useEffect(() => {
-    return () => {
-      reset('password')
-    }
-  }, [])
 
   const submit = (values) => {
     setLoading(true)
@@ -68,12 +52,13 @@ export default function Login ({ canResetPassword }) {
             </Link>
           )}
         </Flex>
-        <Form.Item style={{ marginTop: '2rem' }}>
+        <Form.Item style={{ marginTop: '2rem',marginBottom:0 }}>
           <Button type={'primary'} block={true}
                   loading={loading}
                   htmlType={'submit'}>Login</Button>
         </Form.Item>
       </Form>
     </AuthLayout>
-  )
-}
+  )// render
+
+}// Login
