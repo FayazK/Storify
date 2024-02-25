@@ -10,7 +10,7 @@ export default function AuthLayout ({ title, children }) {
       <Head title={title}/>
       <Space direction={'vertical'} align={'center'}>
         <ApplicationLogo className={'logo'}/>
-        <Card title={title} styles={{
+        <Card title={title} style={{width:'400px'}} styles={{
           title: { textAlign: 'center' },
           header: { border: 'none' },
         }}>
