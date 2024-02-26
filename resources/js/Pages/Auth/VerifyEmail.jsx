@@ -9,6 +9,7 @@ export default function VerifyEmail() {
     const [loading, setLoading] = useState(false);
 
     const submit = (values) => {
+        setLoading(true)
         router.post(route('verification.send'),values,{
             onSuccess:(props)=>{
                 setStatus(props.props.status)
