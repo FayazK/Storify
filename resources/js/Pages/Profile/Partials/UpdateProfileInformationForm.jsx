@@ -1,31 +1,38 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
+import { useForm, usePage } from '@inertiajs/react'
 import { Card, Form } from 'antd'
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
-    const user = usePage().props.auth.user;
+export default function UpdateProfileInformation ({
+  mustVerifyEmail,
+  status,
+  className = '',
+}) {
+  const user = usePage().props.auth.user
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
-        email: user.email,
-    });
+  const {
+    data,
+    setData,
+    patch,
+    errors,
+    processing,
+    recentlySuccessful,
+  } = useForm({
+    name: user.name,
+    email: user.email,
+  })
 
-    const submit = (e) => {
-        e.preventDefault();
+  const submit = (e) => {
+    e.preventDefault()
 
-        patch(route('profile.update'));
-    };
+    patch(route('profile.update'))
+  }
 
-    return (
-        <Card title={'Profile Information'}>
-            <Card.Meta description={'Update your account\'s profile information and email address.'} />
+  return (
+    <Card title={'Profile Information'}>
+      <Card.Meta
+        description={'Update your account\'s profile information and email address.'}/>
 
-            <Form onFinish={submit}>
-                {/*<div>
+      <Form onFinish={submit}>
+        {/*<div>
                     <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
@@ -41,7 +48,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.name} />
                 </div>*/}
 
-                {/*<div>
+        {/*<div>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -57,7 +64,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputError className="mt-2" message={errors.email} />
                 </div>*/}
 
-{/*
+        {/*
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800">
@@ -81,7 +88,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 )}
 */}
 
-                {/*<div className="flex items-center gap-4">
+        {/*<div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
 
                     <Transition
@@ -94,7 +101,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         <p className="text-sm text-gray-600">Saved.</p>
                     </Transition>
                 </div>*/}
-            </Form>
-        </Card>
-    );
+      </Form>
+    </Card>
+  )
 }
