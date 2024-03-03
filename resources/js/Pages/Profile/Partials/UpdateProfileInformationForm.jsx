@@ -25,7 +25,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             <Card.Meta description={'Update your account\'s profile information and email address.'} />
 
             <Form onFinish={submit}>
-                <div>
+                {/*<div>
                     <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
@@ -39,9 +39,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.name} />
-                </div>
+                </div>*/}
 
-                <div>
+                {/*<div>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -55,8 +55,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     />
 
                     <InputError className="mt-2" message={errors.email} />
-                </div>
+                </div>*/}
 
+{/*
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800">
@@ -78,8 +79,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         )}
                     </div>
                 )}
+*/}
 
-                <div className="flex items-center gap-4">
+                {/*<div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
 
                     <Transition
@@ -91,7 +93,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     >
                         <p className="text-sm text-gray-600">Saved.</p>
                     </Transition>
-                </div>
+                </div>*/}
             </Form>
         </Card>
     );

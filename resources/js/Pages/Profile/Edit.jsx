@@ -9,7 +9,7 @@ export default function Edit ({ mustVerifyEmail, status }) {
   return (
     <AppLayout title={'Profile'}>
 
-      <div className="py-12">
+      {/*<div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
             <UpdateProfileInformationForm
@@ -27,7 +27,7 @@ export default function Edit ({ mustVerifyEmail, status }) {
             <DeleteUserForm className="max-w-xl"/>
           </div>
         </div>
-      </div>
+      </div>*/}
     </AppLayout>
   )
 }
