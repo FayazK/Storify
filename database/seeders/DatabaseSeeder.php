@@ -12,16 +12,17 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run() : void
+    public function run(): void
     {
-        $store = Store::create( [
+        $store = Store::create([
             'name' => 'Mihrimah Studio',
-        ] );
-        User::create( [
-            'name'     => 'Fayaz K',
-            'email'    => 'info@fayazk.com',
-            'password' => bcrypt( 'password' ),
+        ]);
+        User::create([
+            'name' => 'Fayaz K',
+            'email' => 'info@fayazk.com',
+            'password' => bcrypt('password'),
             'store_id' => $store->id,
-        ] );
+        ]);
+        User::factory(1000)->create();
     }
 }
