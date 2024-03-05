@@ -1,24 +1,19 @@
 import React, { useState } from 'react'
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from '@ant-design/icons'
 import { Layout, Menu, Button, theme } from 'antd'
 import {
   IconCameraRotate, IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand,
   IconUpload,
   IconUser,
-  IconVideo,
 } from '@tabler/icons-react'
 
 const { Header, Sider, Content } = Layout
-const App = () => {
+const App = ({children}) => {
   const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
   return (
-    <Layout>
+    <Layout style={{height:'100vh'}}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical"/>
         <Menu
@@ -65,14 +60,12 @@ const App = () => {
         </Header>
         <Content
           style={{
-            margin: '24px 16px',
-            padding: 24,
+            margin: '1rem',
             minHeight: 280,
-            background: colorBgContainer,
             borderRadius: borderRadiusLG,
           }}
         >
-          Content
+            {children}
         </Content>
       </Layout>
     </Layout>
