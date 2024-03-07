@@ -1,46 +1,63 @@
-import {Table} from 'antd'
-import {useCallback, useEffect, useState} from 'react'
-import {useRecoilValue} from 'recoil'
-import {dataTableAtom} from '@/Helpers/atom.js'
+import { Table } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { dataTableAtom } from '@/Helpers/atom.js'
+import { tablePaginatedParams } from '@/Helpers/global_props.js'
 
-export default function DataTable({columns, routeName}) {
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-    const tableParams = useRecoilValue(dataTableAtom)
+export default function DataTable ({ columns, routeName }) {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [tableParams, setTableParams] = useRecoilState(dataTableAtom)
 
-    const fetchData = useCallback(() => {
-        setLoading(true);
-        axios({
-            url: route(routeName),
-            params: tableParams[routeName]?.params ?? {},
-            data: tableParams[routeName]?.data ?? {},
-            method: tableParams[routeName]?.method ?? 'POST',
-        }).then(response => {
-            setData(response.data.users);
-            console.log(response);
-        }).catch(error => {
-            console.error("An error occurred while fetching data:", error);
-        }).finally(() => {
-            setLoading(false);
-        });
-    }, [tableParams[routeName]])
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    axios({
+      url: route(routeName),
+      params: tablePaginatedParams(tableParams[routeName]),
+      data: tableParams[routeName]?.data ?? {},
+      method: tableParams[routeName]?.method ?? 'POST',
+    }).then(response => {
+      setData(response.data.users)
+      let meta = response.data.meta
+      let pagination = {
+        ...tableParams[routeName]?.pagination,
+        current: meta.current_page,
+        total: meta.total,
+        pageSize: meta.per_page,
+        showTotal: (total, range) => {
+          return `Showing ${range[0]} to ${range[1]} of ${total} items`
+        },
+      }
 
-    useEffect(() => {
-        fetchData()
-    }, [tableParams[routeName]])
+      let params = { ...tableParams[routeName] } ?? {}
+      params.pagination = pagination
+      setTableParams({ ...tableParams, [routeName]: params })
+      console.log(response.data)
+    }).catch(error => {
+      console.error('An error occurred while fetching data:', error)
+    }).finally(() => {
+      setLoading(false)
+    })
+  }, [tableParams[routeName]])
 
-    useEffect(() => {
-        tableParams[routeName].pagination = {
-            current: tableParams[routeName]?.pagination?.page ?? 1,
-        }
-    }, []);
+  useEffect(() => {
+    fetchData()
+  }, [tableParams[routeName]?.refresh])
 
-    return <Table
-        columns={columns}
-        dataSource={data}
-        loading={loading}
-        size={'small'}
-        pagination={tableParams[routeName]?.pagination ?? false}
-    />
+  const handleTableChange = (pagination, filters, sorter) => {
+    let params = { ...tableParams[routeName] } ?? {}
+    params.pagination = pagination
+    params.refresh = !params.refresh
+    setTableParams({ ...tableParams, [routeName]: params })
+  }// handleTableChange
+
+  return <Table
+    columns={columns}
+    dataSource={data}
+    loading={loading}
+    size={'small'}
+    onChange={handleTableChange}
+    pagination={tableParams[routeName]?.pagination ?? false}
+  />
 
 }// DataTable
