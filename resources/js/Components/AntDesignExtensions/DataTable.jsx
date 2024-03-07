@@ -1,6 +1,6 @@
 import { Table } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { dataTableAtom } from '@/Helpers/atom.js'
 import { tablePaginatedParams } from '@/Helpers/global_props.js'
 
@@ -45,10 +45,14 @@ export default function DataTable ({ columns, routeName }) {
   }, [tableParams[routeName]?.refresh])
 
   const handleTableChange = (pagination, filters, sorter) => {
-    let params = { ...tableParams[routeName] } ?? {}
-    params.pagination = pagination
-    params.refresh = !params.refresh
-    setTableParams({ ...tableParams, [routeName]: params })
+    const newParams = {
+      ...tableParams[routeName],
+      pagination,
+      filters,
+      sorter,
+      refresh: !tableParams[routeName]?.refresh,
+    }
+    setTableParams({ ...tableParams, [routeName]: newParams })
   }// handleTableChange
 
   return <Table
